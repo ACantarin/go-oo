@@ -3,20 +3,32 @@ package main
 import (
 	"fmt"
 	"go-oo/accounts"
+	"go-oo/holders"
 	"math/rand"
 	"os"
 )
 
 func main() {
+	andreHolder := holders.Holder{
+		Name:      "André",
+		Document:  "123.456.789-00",
+		Ocupation: "Programador",
+	}
 	andreAccount := accounts.Account{
-		Holder:  "André",
+		Holder:  andreHolder,
 		Agency:  1001,
 		Number:  123456,
 		Balance: 125.50,
 	}
 
+	joaoHolder := holders.Holder{
+		Name:      "João",
+		Document:  "987.654.321-00",
+		Ocupation: "Product Owner",
+	}
+
 	joaoAccount := accounts.Account{
-		Holder:  "João",
+		Holder:  joaoHolder,
 		Agency:  1001,
 		Number:  123457,
 		Balance: 265.45,

@@ -1,9 +1,12 @@
 package accounts
 
-import "fmt"
+import (
+	"fmt"
+	"go-oo/holders"
+)
 
 type Account struct {
-	Holder  string
+	Holder  holders.Holder
 	Agency  int
 	Number  int
 	Balance float64
@@ -11,23 +14,23 @@ type Account struct {
 
 func (a *Account) Withdraw(withdrawValue float64) (string, bool) {
 	if withdrawValue > a.Balance {
-		message := "Saldo insuficiente para realizar o saque de R$ " + fmt.Sprintf("%.2f", withdrawValue) + " da conta de " + a.Holder
+		message := "Saldo insuficiente para realizar o saque de R$ " + fmt.Sprintf("%.2f", withdrawValue) + " da conta de " + a.Holder.Name
 		return message, false
 	}
 
 	a.Balance -= withdrawValue
-	message := "Saque realizado com sucesso. Saldo atual da conta: R$ " + fmt.Sprintf("%.2f", a.Balance) + " da conta de " + a.Holder
+	message := "Saque realizado com sucesso. Saldo atual da conta: R$ " + fmt.Sprintf("%.2f", a.Balance) + " da conta de " + a.Holder.Name
 	return message, true
 }
 
 func (a *Account) Deposit(depositValue float64) (string, bool) {
 	if depositValue <= 0 {
-		message := "O valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " é inválido para depósito na conta de " + a.Holder
+		message := "O valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " é inválido para depósito na conta de " + a.Holder.Name
 		return message, false
 	}
 
 	a.Balance += depositValue
-	message := "Depositando o valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " na conta de " + a.Holder
+	message := "Depositando o valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " na conta de " + a.Holder.Name
 	return message, true
 }
 
