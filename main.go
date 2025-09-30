@@ -2,26 +2,20 @@ package main
 
 import (
 	"fmt"
+	"go-oo/accounts"
 	"math/rand"
 	"os"
 )
 
-type Account struct {
-	Holder  string
-	Agency  int
-	Number  int
-	Balance float64
-}
-
 func main() {
-	andreAccount := Account{
+	andreAccount := accounts.Account{
 		Holder:  "André",
 		Agency:  1001,
 		Number:  123456,
 		Balance: 125.50,
 	}
 
-	joaoAccount := Account{
+	joaoAccount := accounts.Account{
 		Holder:  "João",
 		Agency:  1001,
 		Number:  123457,
@@ -40,7 +34,7 @@ func main() {
 			maxDepositValue := 200.
 			minDepositValue := -20.
 			depositValue := minDepositValue + rand.Float64()*(maxDepositValue-minDepositValue)
-			depositMessage, _ := andreAccount.deposit(depositValue)
+			depositMessage, _ := andreAccount.Deposit(depositValue)
 
 			fmt.Println(depositMessage)
 			printSeparator()
@@ -54,7 +48,7 @@ func main() {
 			maxWithdrawValue := 200.
 			minWithdrawValue := 0.
 			withdrawValue := minWithdrawValue + rand.Float64()*(maxWithdrawValue-minWithdrawValue)
-			withdrawMessage, _ := andreAccount.withdraw(withdrawValue)
+			withdrawMessage, _ := andreAccount.Withdraw(withdrawValue)
 
 			fmt.Println(withdrawMessage)
 			printSeparator()
@@ -69,7 +63,7 @@ func main() {
 
 			sourceOption := readOption()
 
-			var sourceAccount, destinationAccount *Account
+			var sourceAccount, destinationAccount *accounts.Account
 
 			issetSourceAccount := false
 
@@ -93,7 +87,7 @@ func main() {
 			maxTransferValue := 200.
 			minTransferValue := 0.
 			transferValue := minTransferValue + rand.Float64()*(maxTransferValue-minTransferValue)
-			transferMessage, _ := sourceAccount.transfer(transferValue, destinationAccount)
+			transferMessage, _ := sourceAccount.Transfer(transferValue, destinationAccount)
 
 			fmt.Println(transferMessage)
 			fmt.Println(sourceAccount)
@@ -123,37 +117,6 @@ func readOption() int {
 	fmt.Scan(&option)
 
 	return option
-}
-
-func (a *Account) withdraw(withdrawValue float64) (string, bool) {
-	if withdrawValue > a.Balance {
-		message := "Saldo insuficiente para realizar o saque de R$ " + fmt.Sprintf("%.2f", withdrawValue) + " da conta de " + a.Holder
-		return message, false
-	}
-
-	a.Balance -= withdrawValue
-	message := "Saque realizado com sucesso. Saldo atual da conta: R$ " + fmt.Sprintf("%.2f", a.Balance) + " da conta de " + a.Holder
-	return message, true
-}
-
-func (a *Account) deposit(depositValue float64) (string, bool) {
-	if depositValue <= 0 {
-		message := "O valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " é inválido para depósito na conta de " + a.Holder
-		return message, false
-	}
-
-	a.Balance += depositValue
-	message := "Depositando o valor de R$ " + fmt.Sprintf("%.2f", depositValue) + " na conta de " + a.Holder
-	return message, true
-}
-
-func (a *Account) transfer(transferValue float64, destinationAccount *Account) (string, bool) {
-	withdrawMessage, withdrawStatus := a.withdraw(transferValue)
-	if withdrawStatus {
-		return destinationAccount.deposit(transferValue)
-	}
-
-	return withdrawMessage, false
 }
 
 func printSeparator() {
