@@ -105,6 +105,9 @@ func main() {
 			fmt.Println(sourceAccount)
 			fmt.Println(destinationAccount)
 			printSeparator()
+		case 4:
+			WithdrawFromRunningPayer()
+			printSeparator()
 		case 0:
 			fmt.Println("Saindo...")
 			os.Exit(0)
@@ -121,6 +124,7 @@ func showMenu() {
 	fmt.Println("1 - Depositar")
 	fmt.Println("2 - Sacar")
 	fmt.Println("3 - Transferir")
+	fmt.Println("4 - Pagar conta")
 	fmt.Println("0 - Sair")
 }
 
@@ -129,6 +133,26 @@ func readOption() int {
 	fmt.Scan(&option)
 
 	return option
+}
+
+func WithdrawFromRunningPayer() {
+	johnDoeAccount := accounts.Account{}
+	johnDoeAccount.Deposit(1000)
+
+	fmt.Println("Saldo da conta de John Doe antes de pagar a conta:", johnDoeAccount.GetBalance())
+	payBill(&johnDoeAccount)
+	fmt.Println("Saldo da conta de John Doe depois de pagar a conta:", johnDoeAccount.GetBalance())
+
+	janeDoeAccount := accounts.SavingsAccount{}
+	janeDoeAccount.Deposit(500)
+
+	fmt.Println("Saldo da conta de Jane Doe antes de pagar a conta:", janeDoeAccount.GetBalance())
+	payBill(&janeDoeAccount)
+	fmt.Println("Saldo da conta de Jane Doe depois de pagar a conta:", janeDoeAccount.GetBalance())
+}
+
+func payBill(billPayer accounts.BillPayer) {
+	billPayer.Withdraw(100)
 }
 
 func printSeparator() {
